@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-sweeper-batch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: data-sweeper-batch
+  template:
+    metadata:
+      labels:
+        role: data-sweeper-batch
+    spec:
+      containers:
+      - name: data-sweeper-batch
+        image: data-sweeper-batch:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: delete-path
+          mountPath: /data/chromium
+        - name: delete-path2
+          mountPath: /data/Downloads/
+      volumes:
+      - name: delete-path
+        hostPath:
+          path: HOME_PATH_XXX/.cache/chromium/Default/
+      - name: delete-path2
+        hostPath:
+          path: HOME_PATH_XXX/Downloads/
